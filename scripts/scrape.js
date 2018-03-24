@@ -35,10 +35,12 @@ module.exports = function(req, res) {
 	    
 	    var count = 0;
 	    var newArticleFound = false;
+	    var newArticles = 0;
 	    function addToDB(arrayOfArticles) {
 	    //look in the database to check if the headline already exists
 	    	db.Headline.find({"headline": arrayOfArticles[count].headline}).limit(1)
 	      	.then(function(found){
+	      		
 	      		// if nothing is found, add the article to the database
 	      		if (!found.length) {
 
@@ -47,6 +49,7 @@ module.exports = function(req, res) {
 			        	// View the added result in the console
 			        	console.log(dbArticle);
 			          	newArticleFound = true;
+			          	newArticles++;
 			    	})
 			    	.catch(function(err) {
 			       		console.log("------------------------------------------------------------------------------");
@@ -62,9 +65,9 @@ module.exports = function(req, res) {
 	         		addToDB(arrayOfArticles);
 	         	} else {
 	         		if (newArticleFound) {
-				    	res.send("new articles added");
+				    	res.json(newArticles + " articles added!");
 				    } else {
-				    	res.json("no articles found");
+				    	res.json("No Articles Found");
 				    }
 	         	}
 	         })

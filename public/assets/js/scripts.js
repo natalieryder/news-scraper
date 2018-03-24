@@ -11,9 +11,9 @@ $(document).ready(function() {
 		}
 	};
 
-	initPage(onSavedPage());
+	initPage();
 
-	$(document).on("click", "#scrape", handleArticleScrape);
+	$(document).on("click", ".scrape", handleArticleScrape);
 	$(document).on("click", ".btn.save", handleArticleSave);
 	$(document).on("click", ".btn.unsave", handleArticleSave);
 	$(document).on("click", ".notes", handleArticleNotes);
@@ -21,7 +21,8 @@ $(document).ready(function() {
 	$(document).on("click", ".note-delete", noteDelete);
 
 
-	function initPage(saved) {
+	function initPage() {
+		let saved = onSavedPage()
 	    // Empty the article container, run an AJAX request for any unsaved headlines
 	    articleContainer.empty();
 
@@ -32,7 +33,14 @@ $(document).ready(function() {
 	      }
 	      else {
 	        // Otherwise render a message explaing we have no articles
-	        alert("no articles found");
+	        $('.article-container').html(`
+	        	<div class='card mb-3'>
+	        		<div class='card-body'>
+	        			There's nothing here.
+	        			<button id="scrape" class="btn my-3 btn-dark scrape">Get Articles</button>
+	        		</div>
+	        	</div>
+	        	`)
 	      }
 	    });
   	}
@@ -127,8 +135,9 @@ $(document).ready(function() {
     	// get the /scrape route from routes/api/index which points to scripts/scrape.js
     	$.get("/scrape")
 		.then(function(data) {
-			initPage(false);
-			alert(data);
+			initPage();
+			$('.scape-modal-content').html(data);
+			$('#scrapeModal').modal();
 		})
 		.catch(function(err) {
 			console.log(err);
@@ -160,7 +169,7 @@ $(document).ready(function() {
 	      console.log(data);
 	      if (data.success) {
 	        // Run the initPage function again. This will reload the entire list of articles
-	       	initPage(onSavedPage());
+	       	initPage();
 	      }
 	    });
 	}
