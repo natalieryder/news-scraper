@@ -140,7 +140,8 @@ $(document).ready(function() {
 			$('#scrapeModal').modal();
 		})
 		.catch(function(err) {
-			console.log(err);
+			$('.scape-modal-content').html(err);
+			$('#scrapeModal').modal();
 		});
     };
 
@@ -166,7 +167,7 @@ $(document).ready(function() {
 	      url: "/api/headlines",
 	      data: data
 	    }).then(function(data) {
-	      console.log(data);
+
 	      if (data.success) {
 	        // Run the initPage function again. This will reload the entire list of articles
 	       	initPage();
@@ -203,8 +204,7 @@ $(document).ready(function() {
 	    });
 	}
 	function handleNoteSave() {
-		console.log("handleNoteSave");
-		// console.log($(this).data("article"));
+
 	    // This function handles what happens when a user tries to save a new note for an article
 	    // Setting a variable to hold some formatted data about our note,
 	    // grabbing the note typed into the input box
